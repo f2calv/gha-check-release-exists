@@ -19,10 +19,10 @@ if ($null -ne $prior) {
 Write-Host "Previous Release`t:`t$priorRelease"
 
 if (($ReleaseName -eq $priorRelease)) {
-    Write-Host "Release already exists."
+    Write-Host "Release '$ReleaseName' already exists."
     return $true
 }
 else {
-    Write-Host "Release not found."
+    Write-Host "Release '$ReleaseName' not found."
     return $false
 }
