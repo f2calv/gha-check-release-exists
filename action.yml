@@ -1,6 +1,6 @@
 name: gha-check-release-exists
 author: Alex Vincent
-description: Checks if a release exists for the current repository.
+description: Checks if a github release exists.
 
 inputs:
   GITHUB_TOKEN:
@@ -23,7 +23,7 @@ runs:
       shell: pwsh
       run: |
         $ReleaseExists = &"./.scripts/Invoke-CheckReleaseExists.ps1" `
-          -ReleaseName ${{ inputs.ReleaseName }} `
+          -ReleaseName ${{ inputs.ReleaseName }}
         echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
