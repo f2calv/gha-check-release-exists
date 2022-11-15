@@ -1,6 +1,6 @@
 name: gha-check-release-exists
 author: Alex Vincent
-description: Checks if a release exists for the current repository.
+description: Checks if a github release exists.
 
 inputs:
   GITHUB_TOKEN:
