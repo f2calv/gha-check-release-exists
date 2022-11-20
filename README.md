@@ -7,7 +7,7 @@ This GitHub Action executes GitHub CLI and evaluates it's output to see if a rel
 ```yaml
 steps:
 
-- uses: f2calv/gha-check-release-exists@1
+- uses: f2calv/gha-check-release-exists@v1
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     ReleaseName: 1.2.3
