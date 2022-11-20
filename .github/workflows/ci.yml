@@ -38,6 +38,8 @@ jobs:
           echo "SemVer=$($GitVersion.SemVer)" >> $env:GITHUB_OUTPUT
           Write-Host "FullSemVer=$($GitVersion.FullSemVer)"
           echo "FullSemVer=$($GitVersion.FullSemVer)" >> $env:GITHUB_OUTPUT
+          Write-Host "MajorVer=$($GitVersion.Major)"
+          echo "MajorVer=$($GitVersion.Major)" >> $env:GITHUB_OUTPUT
 
       - id: check-release-exists
         name: check-release-exists
@@ -57,3 +59,11 @@ jobs:
         with:
           tag_name: v${{ steps.gitversion.outputs.FullSemVer }}
           name: ${{ steps.gitversion.outputs.FullSemVer }}
+
+      - name: update major tag
+        if: |
+          steps.check-release-exists.outputs.ReleaseExists == 'false'
+            && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        run: |
+          git tag -fa v${{ steps.gitversion.outputs.MajorVer }} -m "Update v${{ steps.gitversion.outputs.MajorVer }} tag"
+          git push origin v${{ steps.gitversion.outputs.MajorVer }} --force
