@@ -22,7 +22,7 @@ runs:
       name: github-check-release
       shell: pwsh
       run: |
-        $ReleaseExists = &"./.scripts/Invoke-CheckReleaseExists.ps1" `
+        $ReleaseExists = &"${{ github.action_path }}/.scripts/Invoke-CheckReleaseExists.ps1" `
           -ReleaseName ${{ inputs.ReleaseName }}
         echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
       env:
