@@ -8,23 +8,24 @@ This GitHub Action executes GitHub CLI and evaluates it's output to see if a rel
 steps:
 
 #insert your automated versioning system/tool here, e.g. gitversion, etc...
-- name: gitversion
-  shell: pwsh
+- name: gitversion (1 of 2)
+  uses: gittools/actions/gitversion/setup@v0
+  with:
+    versionSpec: 5.x
+
+- name: gitversion (2 of 2)
   id: gitversion
-  run: |
-    dotnet tool update -g GitVersion.Tool
-    $GitVersion = dotnet-gitversion ${{ github.workspace }} /nofetch | ConvertFrom-Json
-    Write-Host "SemVer=$($GitVersion.SemVer)"
-    echo "SemVer=$($GitVersion.SemVer)" >> $env:GITHUB_OUTPUT
-    Write-Host "FullSemVer=$($GitVersion.FullSemVer)"
-    echo "FullSemVer=$($GitVersion.FullSemVer)" >> $env:GITHUB_OUTPUT
+  uses: gittools/actions/gitversion/execute@v0
+  with:
+    useConfigFile: true
+    additionalArguments: /nofetch
 
 - uses: f2calv/gha-check-release-exists@v1
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     ReleaseName: 1.2.3
     #Note: ideally pass in the desired release name from another action output
-    #ReleaseName: ${{ steps.gitversion.outputs.SemVer }}
+    #ReleaseName: ${{ steps.gitversion.outputs.semVer }}
 
 #insert your build steps here, e.g. nuget, container, etc...
 
