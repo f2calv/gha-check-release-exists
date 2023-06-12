@@ -20,6 +20,7 @@ runs:
   steps:
     - id: check-release
       name: github-check-release
+      #TODO: rewrite Invoke-CheckReleaseExists.ps1 to be a shell script
       shell: pwsh
       run: |
         $ReleaseExists = &"${{ github.action_path }}/.scripts/Invoke-CheckReleaseExists.ps1" `
