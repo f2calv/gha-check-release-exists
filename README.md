@@ -20,7 +20,7 @@ steps:
     useConfigFile: true
     additionalArguments: /nofetch
 
-- uses: f2calv/gha-check-release-exists@v1
+- uses: f2calv/gha-check-release-exists@v2
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     ReleaseName: 1.2.3
