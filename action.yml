@@ -30,6 +30,7 @@ runs:
 
     - id: check-release
       name: github-check-release
+      shell: bash
       run: |
         RELEASE_LINE=$(gh release list --limit 1)
         arrRELEASE_LINE=(${RELEASE_LINE// / })
@@ -43,11 +44,11 @@ runs:
 
         if [ "$priorRelease" = "${{ inputs.ReleaseName }}" ]; then
               echo "Release '${{ inputs.ReleaseName }}' already exists."
-              echo "::set-output name=ReleaseExists::True"
+              echo "::set-output name=ReleaseExists::true"
               #echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
         else
               echo "Release '${{ inputs.ReleaseName }}' not found."
-              echo "::set-output name=ReleaseExists::False"
+              echo "::set-output name=ReleaseExists::false"
               #echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
         fi
       env:
