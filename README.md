@@ -9,13 +9,13 @@ steps:
 
 #insert your automated versioning system/tool here, e.g. gitversion, etc...
 - name: gitversion (1 of 2)
-  uses: gittools/actions/gitversion/setup@v0
+  uses: gittools/actions/gitversion/setup@v1
   with:
     versionSpec: 5.x
 
 - name: gitversion (2 of 2)
   id: gitversion
-  uses: gittools/actions/gitversion/execute@v0
+  uses: gittools/actions/gitversion/execute@v1
   with:
     useConfigFile: true
     additionalArguments: /nofetch
