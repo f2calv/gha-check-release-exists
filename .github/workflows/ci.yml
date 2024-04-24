@@ -10,6 +10,7 @@ on:
         default: "false"
   push:
     branches-ignore:
+      - .github/dependabot.yaml
       - "preview/**"
     paths-ignore:
       - LICENSE
