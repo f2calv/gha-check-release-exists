@@ -24,7 +24,7 @@ runs:
     #   run: |
     #     $ReleaseExists = &"${{ github.action_path }}/.scripts/Invoke-CheckReleaseExists.ps1" `
     #       -ReleaseName ${{ inputs.ReleaseName }}
-    #     echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
+    #     echo "ReleaseExists=$ReleaseExists" >> $GITHUB_OUTPUT
     #   env:
     #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
 
