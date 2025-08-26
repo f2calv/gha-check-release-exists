@@ -37,12 +37,11 @@ runs:
         last=${arrRELEASE_LINE[0]}
         priorRelease=0.0.0
 
-        if [ ! -z "$last" ]
-        then
+        if [[ ! -z "$last" ]]; then
           priorRelease=$last
         fi
 
-        if [ "$priorRelease" = "${{ inputs.ReleaseName }}" ]; then
+        if [[ "$priorRelease" == "${{ inputs.ReleaseName }}" ]]; then
           echo "Release '${{ inputs.ReleaseName }}' already exists."
           echo "ReleaseExists=true" >> $GITHUB_OUTPUT
         else
