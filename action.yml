@@ -22,12 +22,23 @@ outputs:
 runs:
   using: composite
   steps:
+    # - id: check-release
+    #   name: Check release exists
+    #   shell: pwsh
+    #   run: |
+    #     $ReleaseExists = &"${{ github.action_path }}/.scripts/Invoke-CheckReleaseExists.ps1" `
+    #       -ReleaseName $env:RELEASE_NAME
+    #     echo "ReleaseExists=$ReleaseExists" >> $env:GITHUB_OUTPUT
+    #   env:
+    #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+    #     RELEASE_NAME: ${{ inputs.ReleaseName }}
+
     - id: check-release
       name: Check release exists
       shell: bash
       run: |
         if gh release view "$RELEASE_NAME" --json tagName > /dev/null 2>&1; then
-          echo "Release '$RELEASE_NAME' already exists."
+          echo "::warning::Release '$RELEASE_NAME' already exists."
           echo "ReleaseExists=true" >> "$GITHUB_OUTPUT"
         else
           echo "Release '$RELEASE_NAME' not found."
