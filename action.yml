@@ -1,52 +1,38 @@
 name: gha-check-release-exists
 author: Alex Vincent
-description: Checks if a github release exists.
+description: Checks if a GitHub release exists in the current repository.
+
+branding:
+  icon: tag
+  color: blue
 
 inputs:
   GITHUB_TOKEN:
-    description: i.e. secrets.GITHUB_TOKEN
+    description: GitHub token, i.e. secrets.GITHUB_TOKEN
     required: true
   ReleaseName:
-    description: i.e. '1.2.2' or '1.2.2-2022-04-ci-updates.13'
+    description: Release name to check, i.e. '1.2.2' or '1.2.2-2022-04-ci-updates.13'
     required: true
 
 outputs:
   ReleaseExists:
-    description: i.e. True or False
+    description: Whether the release exists, i.e. 'true' or 'false'
     value: ${{ steps.check-release.outputs.ReleaseExists }}
 
 runs:
   using: composite
   steps:
-    # - id: check-release
-    #   name: github-check-release
-    #   shell: pwsh
-    #   run: |
-    #     $ReleaseExists = &"${{ github.action_path }}/.scripts/Invoke-CheckReleaseExists.ps1" `
-    #       -ReleaseName ${{ inputs.ReleaseName }}
-    #     echo "ReleaseExists=$ReleaseExists" >> $GITHUB_OUTPUT
-    #   env:
-    #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-
     - id: check-release
-      name: github-check-release
+      name: Check release exists
       shell: bash
       run: |
-        RELEASE_LINE=$(gh release list --limit 1)
-        arrRELEASE_LINE=(${RELEASE_LINE// / })
-        last=${arrRELEASE_LINE[0]}
-        priorRelease=0.0.0
-
-        if [[ ! -z "$last" ]]; then
-          priorRelease=$last
-        fi
-
-        if [[ "$priorRelease" == "${{ inputs.ReleaseName }}" ]]; then
-          echo "Release '${{ inputs.ReleaseName }}' already exists."
-          echo "ReleaseExists=true" >> $GITHUB_OUTPUT
+        if gh release view "$RELEASE_NAME" --json tagName > /dev/null 2>&1; then
+          echo "Release '$RELEASE_NAME' already exists."
+          echo "ReleaseExists=true" >> "$GITHUB_OUTPUT"
         else
-          echo "Release '${{ inputs.ReleaseName }}' not found."
-          echo "ReleaseExists=false" >> $GITHUB_OUTPUT
+          echo "Release '$RELEASE_NAME' not found."
+          echo "ReleaseExists=false" >> "$GITHUB_OUTPUT"
         fi
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        RELEASE_NAME: ${{ inputs.ReleaseName }}
