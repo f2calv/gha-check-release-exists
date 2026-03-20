@@ -1,0 +1,69 @@
+name: test
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  push:
+    branches-ignore:
+      - "preview/**"
+    paths-ignore:
+      - .github/dependabot.yml
+      - LICENSE
+      - README.md
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      # Resolve an existing release name dynamically so the test stays valid
+      # even after new releases are published.
+      - name: Get latest release name
+        id: get-latest
+        shell: bash
+        run: echo "release=$(gh release list --limit 1 --json tagName -q '.[0].tagName')" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Test 1: a release that exists → ReleaseExists must be 'true'
+      - name: Check existing release
+        id: release-exists
+        uses: ./
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ReleaseName: ${{ steps.get-latest.outputs.release }}
+
+      - name: Assert existing release returns true
+        shell: bash
+        run: |
+          if [[ "$RESULT" != "true" ]]; then
+            echo "::error::Expected ReleaseExists=true for '$RELEASE' but got '$RESULT'"
+            exit 1
+          fi
+          echo "✓ ReleaseExists=true for existing release '$RELEASE'"
+        env:
+          RESULT: ${{ steps.release-exists.outputs.ReleaseExists }}
+          RELEASE: ${{ steps.get-latest.outputs.release }}
+
+      # Test 2: a release that does not exist → ReleaseExists must be 'false'
+      - name: Check non-existing release
+        id: release-not-exists
+        uses: ./
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ReleaseName: 99.99.99
+
+      - name: Assert non-existing release returns false
+        shell: bash
+        run: |
+          if [[ "$RESULT" != "false" ]]; then
+            echo "::error::Expected ReleaseExists=false for '99.99.99' but got '$RESULT'"
+            exit 1
+          fi
+          echo "✓ ReleaseExists=false for non-existing release '99.99.99'"
+        env:
+          RESULT: ${{ steps.release-not-exists.outputs.ReleaseExists }}

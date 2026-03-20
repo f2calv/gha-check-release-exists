@@ -36,14 +36,7 @@ runs:
     - id: check-release
       name: Check release exists
       shell: bash
-      run: |
-        if gh release view "$RELEASE_NAME" --json tagName > /dev/null 2>&1; then
-          echo "::warning::Release '$RELEASE_NAME' already exists."
-          echo "ReleaseExists=true" >> "$GITHUB_OUTPUT"
-        else
-          echo "Release '$RELEASE_NAME' not found."
-          echo "ReleaseExists=false" >> "$GITHUB_OUTPUT"
-        fi
+      run: "${{ github.action_path }}/.scripts/check-release-exists.sh"
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         RELEASE_NAME: ${{ inputs.ReleaseName }}
