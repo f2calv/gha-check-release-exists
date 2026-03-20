@@ -10,16 +10,9 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "Release Name`t`t:`t$ReleaseName"
 
-#Note: sadly gh cli doesn't have --json output on all commands so we parse the response manually.
-$prior = (gh release list --limit 1)
-$priorRelease = "0.0.0"
-if ($null -ne $prior) {
-    $priorRelease = $prior.Split("`t")[0]
-}
-Write-Host "Previous Release`t:`t$priorRelease"
-
-if (($ReleaseName -eq $priorRelease)) {
-    Write-Host "Release '$ReleaseName' already exists."
+$null = gh release view $ReleaseName --json tagName 2>&1
+if ($LASTEXITCODE -eq 0) {
+    Write-Warning "Release '$ReleaseName' already exists."
     return $true
 }
 else {
