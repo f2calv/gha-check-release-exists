@@ -11,13 +11,13 @@ This GitHub Action uses the GitHub CLI to check whether a specific release exist
 steps:
   # Insert your automated versioning step here, e.g. gitversion, etc...
   - name: gitversion (1 of 2)
-    uses: gittools/actions/gitversion/setup@v1
+    uses: gittools/actions/gitversion/setup@v4
     with:
-      versionSpec: 5.x
+      versionSpec: 6.x
 
   - name: gitversion (2 of 2)
     id: gitversion
-    uses: gittools/actions/gitversion/execute@v1
+    uses: gittools/actions/gitversion/execute@v4
     with:
       useConfigFile: true
       additionalArguments: /nofetch
