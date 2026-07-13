@@ -45,10 +45,11 @@ steps:
 
 ## Inputs
 
-| Name | Required | Description |
-| ---- | -------- | ----------- |
-| `GITHUB_TOKEN` | ✅ | GitHub token used to query releases, i.e. `secrets.GITHUB_TOKEN` |
-| `ReleaseName` | ✅ | Release name to check for, i.e. `1.2.2` or `1.2.2-2022-04-ci-updates.12` |
+| Name | Required | Default | Description |
+| ---- | -------- | ------- | ----------- |
+| `GITHUB_TOKEN` | ✅ | — | GitHub token used to query releases, i.e. `secrets.GITHUB_TOKEN` |
+| `ReleaseName` | ✅ | — | Release name to check for, i.e. `1.2.2` or `1.2.2-2022-04-ci-updates.12` |
+| `Shell` | — | `bash` | Shell to use for the check step: `bash` or `pwsh` |
 
 ## Outputs
 
