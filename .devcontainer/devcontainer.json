@@ -13,6 +13,9 @@
             "moby": false
         },
         "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/powershell:2": {
+            "modules": "Pester==5.7.1"
+        },
         "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {
             "jqVersion": "latest",
             "yqVersion": "latest"
@@ -40,6 +43,7 @@
                 "mutantdino.resourcemonitor",
                 "usernamehw.errorlens",
                 "davidanson.vscode-markdownlint",
+                "redhat.vscode-yaml",
                 "github.vscode-github-actions"
             ]
         }
